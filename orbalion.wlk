@@ -7,6 +7,10 @@ class Equipo {
     method totalValoresEnergeticosDeTecnologias() = tecnologiasComplementarias.sum({t => t.valorEnergetico()}) 
 
     method energiaTotal() = nivelDeEnergiaBase + self.totalValoresEnergeticosDeTecnologias()
+
+    method agregarTecnologia(tecnologia) {
+        tecnologiasComplementarias.add(tecnologia)
+    } 
 }
 
 class Luminico inherits Equipo{
@@ -33,9 +37,21 @@ class Entrenador {
   const cantidadDeCiclosSolaresDeExperiencia
   const estaEnSintonia
   const nivelDePrecisionEstrategica
-  const rol
-  const rolesAutorizados = ["Estratega Cuantico", "Arquitecto de Energia", "Guia Mental"]
+  var rol = estrategaCuantico
+  const rolesHomologados = [estrategaCuantico, arquitectoDeEnergia, guiaMental]
+
+  method asignarRol(unRol) {
+    if(rolesHomologados.contains(unRol)){
+        rol = unRol
+    }else{
+        self.error("Rol no homologado por la FOZ")
+    }
+  }
 }
+
+object estrategaCuantico {}
+object arquitectoDeEnergia {}
+object guiaMental {}
 
 class Tecnologia{
     const nombre

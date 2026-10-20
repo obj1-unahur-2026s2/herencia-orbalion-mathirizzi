@@ -1,5 +1,72 @@
+import orbalion.*
+
 describe "Tests Orbalion" {
-  test "Tests punto 1" {
+  const entrenador1 = new Entrenador(
+    cantidadDeCiclosSolaresDeExperiencia = 10,
+    estaEnSintonia = true,
+    nivelDePrecisionEstrategica = 5
+  )
+  const luminicoConAltaRadiacion = new Luminico(
+    nombre = "equipo 1",
+    nivelDeEnergiaBase = 1000,
+    entrenador = entrenador1,
+    nivelDeRadiacion = 5500
+  )
+  const luminicoConBajaRadiacion = new Luminico(
+    nombre = "equipo 1",
+    nivelDeEnergiaBase = 1000,
+    entrenador = entrenador1,
+    nivelDeRadiacion = 4500
+  )
+  const sinteticoCon6Modulos = new Sintetico(
+    nombre = "equipo 2",
+    nivelDeEnergiaBase = 1500,
+    entrenador = entrenador1,
+    nivelDeProcesamientoCentral = 100,
+    cantidadDeModulosActivos = 6,
+    estaCertificadoComoUnidadEstable = true
+  )
+  const sinteticoCon4Modulos = new Sintetico(
+    nombre = "equipo 2",
+    nivelDeEnergiaBase = 1500,
+    entrenador = entrenador1,
+    nivelDeProcesamientoCentral = 100,
+    cantidadDeModulosActivos = 4,
+    estaCertificadoComoUnidadEstable = true
+  )
+  const tecnologia1 = new Tecnologia(
+    nombre = "núcleos gravitacionales",
+    valorEnergetico = 100,
+    estaActiva = true
+  )
+  const tecnologia2 = new Tecnologia(
+    nombre = "interfaces de proyección mental",
+    valorEnergetico = 500,
+    estaActiva = false
+  )
+  
+  test "Tests punto 1 - Un entrenador no puede tener tener un rol distinto a los autorizados por la FOZ." {
+    entrenador1.asignarRol("cadete")
     
+    assert.equals(1000, luminicoConBajaRadiacion.energiaTotal())
+  }
+  
+  test "Tests punto 1 - Un equipo lumínico con radiación > 5000 y sin tecnologías activas → su energía total es su energía base." {
+    assert.equals(1000, luminicoConAltaRadiacion.energiaTotal())
+  }
+  
+  test "Tests punto 1 - Un equipo lumínico con radiación < 5000 → obtiene el bono del 10%." {
+    assert.equals(1100, luminicoConBajaRadiacion.energiaTotal())
+  }
+  
+  test "Tests punto 1 - Un equipo sintético con 6 módulos → aplica correctamente la penalización del 20%." {
+    assert.equals(1250, sinteticoCon6Modulos.energiaTotal())
+  }
+  
+  test "Tests punto 1 - Un equipo sintético con 4 módulos y 2 tecnologías complementarias → suma correctamente los valores energéticos." {
+    sinteticoCon4Modulos.agregarTecnologia(tecnologia1)
+    sinteticoCon4Modulos.agregarTecnologia(tecnologia2)
+    
+    assert.equals(2100, sinteticoCon4Modulos.energiaTotal())
   }
 }
